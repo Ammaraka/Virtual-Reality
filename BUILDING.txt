@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 === Building Aurora ===
+=======
+==== Building OpenSim ====
+>>>>>>> OpenSim/master
 
 === Building on Windows ===
 
@@ -22,18 +26,35 @@ Steps:
 
 Prereqs:
  * Mono >= 2.4.3
+<<<<<<< HEAD
  * XBuild
+=======
+ * Nant >= 0.85
+>>>>>>> OpenSim/master
  * On some Linux distributions you may need to install additional packages.  
     See http://opensimulator.org/wiki/Dependencies for more information.
 
+ * May also use xbuild (included in mono distributions)
+ * May use Monodevelop, a cross-platform IDE 
+
 From the distribution type:
  * ./runprebuild.sh
+<<<<<<< HEAD
  * xbuild Aurora.sln
+=======
+ * nant (or xbuild)
+>>>>>>> OpenSim/master
  * cd bin 
 === If your Mono version >= 2.8 ===
  * run mono Aurora.exe --gc=sgen
 === If your Mono version < 2.8 ===
  * run mono Aurora.exe
+
+=== Using Monodevelop ===
+
+From the distribution type:
+ * ./runprebuild.sh
+ * type monodevelop OpenSim.sln
 
 === References ===
  
