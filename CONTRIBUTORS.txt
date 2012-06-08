@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 --------------- Aurora contributors (Thanks for all the patches :)) --------------------------
 
 Revolution Smythe
@@ -17,36 +18,44 @@ SignpostMarv
 ------------------ OpenSim ------------------
 
 The following people have contributed to OpenSim (Thank you 
+=======
+   <<<>>>>The following people have contributed to OpenSim (Thank you 
+>>>>>>> OpenSim/master
 for your effort!)
-
-Add your name in here if you have committed to OpenSim
 
 = Current OpenSim Developers (in very rough order of appearance) =
 These folks represent the current core team for OpenSim, and are the
 people that make the day to day of OpenSim happen.
 
+* justincc (OSVW Consulting, justincc.org)
+* chi11ken (Genkii)
+* dahlia
+* Melanie Thielker
+* Diva (Crista Lopes, University of California, Irvine)
+* Dan Lake (Intel)
+* Marck
+* Mic Bowman (Intel)
+* BlueWall (James Hughes)
+* Nebadon Izumi (Michael Cerquoni, OSgrid)
+* Snoopy Pfeffer
+* Richard Adams (Intel)
+
+= Core Developers Following the White Rabbit =
+Core developers who have temporarily (we hope) gone chasing the white rabbit. 
+They are in all similar to the active core developers, except that they haven't
+been that active lately, so their voting rights are awaiting their come back. 
+
 * MW (Tribal Media AB)
 * Adam Frisby 	(DeepThink Pty Ltd)
-* MingChen 	(DeepThink Pty Ltd)
 * lbsa71 (Tribal Media AB)
-* Sean Dague / sdague (IBM)
-* Tedd
-* justincc
 * Teravus (w3z)
-* Johan Berntsson (3Di)
 * Ckrinke (Charles Krinke)
-* chi11ken (Genkii)
-* adjohn (Genkii)
 * Dr Scofield aka Dirk Husemann (IBM Research - Zurich)
-* dahlia
 * mikem (3Di)
-* Melanie Thielker
 * Homer_Horwitz
-* idb (Ian Brown)
-* Diva (Crista Lopes, University of California, Irvine)
 * nlin (3Di)
 * Arthur Rodrigo S Valadares (IBM)
-
+* John Hurliman
 
 = Past Open Sim Developers =
 These folks are alumns of the OpenSim core group, but are now
@@ -62,6 +71,12 @@ where we are today.
 * Dalien
 * Darok
 * Alondria
+* Sean Dague / sdague (IBM)
+* Tedd
+* MingChen 	(DeepThink Pty Ltd)
+* adjohn (Genkii)
+* idb (Ian Brown)
+* Johan Berntsson (3Di)
 
 
 = Additional OpenSim Contributors =
@@ -78,6 +93,7 @@ what it is today.
 * CharlieO
 * ChrisDown
 * Chris Yeoh (IBM)
+* controlbreak
 * coyled
 * Daedius
 * Dong Jun Lan (IBM)
@@ -87,12 +103,16 @@ what it is today.
 * dmiles (Daxtron Labs)
 * dslake (Intel)
 * FredoChaplin
+* Garmin Kawaguichi
 * Gerhard
 * Godfrey
 * Grumly57
+* GuduleLapointe
 * Ewe Loon
+* Fernando Oliveira
 * Fly-Man
 * Flyte Xevious
+* Garmin Kawaguichi
 * Imaze Rhiano
 * Intimidated
 * Jeremy Bongio (IBM)
@@ -110,6 +130,8 @@ what it is today.
 * lulurun 
 * M.Igarashi
 * maimedleech
+* Mana Janus
+* MarcelEdward
 * Mic Bowman
 * Michelle Argus
 * Michael Cortez (The Flotsam Project, http://osflotsam.org/)
@@ -120,10 +142,15 @@ what it is today.
 * Misterblue (Intel)
 * Mircea Kitsune
 * mpallari
+* MrMonkE
+* Nebadon Izumi (Michael Cerquoni - http://OSgrid.org)
+* Neil Canham
 * nornalbion
 * Omar Vera Ustariz (IBM)
 * openlifegrid.com
+* Oren Hurvitz (Kitely)
 * otakup0pe
+* Pixel Tomsen
 * ralphos
 * RemedyTomm
 * Revolution
@@ -134,9 +161,15 @@ what it is today.
 * Ruud Lathorp
 * SachaMagne
 * Salahzar Stenvaag
+* satguru p srivastava
 * sempuki
-* Snoopy
+* SignpostMarv
+* SpotOn3D
+* Stefan_Boom / stoehr
 * Strawberry Fride
+* Talun
+* TechplexEngineer (Blake Bourque)
+* TBG Renfold
 * tglion
 * tlaukkan/Tommil (Tommi S. E. Laukkanen, Bubble Cloud)
 * tyre
@@ -185,6 +218,7 @@ This software uses components from the following developers:
 * GlynnTucker.Cache (http://gtcache.sourceforge.net/)
 * NDesk.Options 0.2.1 (http://www.ndesk.org/Options)
 * Json.NET 3.5 Release 6.  The binary used is actually Newtonsoft.Json.Net20.dll for Mono 2.4 compatability (http://james.newtonking.com/projects/json-net.aspx)
+* zlib.net for C# 1.0.4 (http://www.componentace.com/zlib_.NET.htm)
 
 Some plugins are based on Cable Beach
 Cable Beach is Copyright (c) 2008 Intel Corporation
@@ -194,3 +228,4 @@ In addition, we would like to thank:
 * The Mono Project
 * The NANT Developers
 * Microsoft (.NET, MSSQL-Adapters)
+*x
