@@ -317,7 +317,7 @@ namespace Aurora.ScriptEngine.AuroraDotNetEngine
 
             scene.EventManager.OnRemoveScript += StopScript;
 
-            UpdateLeasesTimer = new Timer(9.5*1000*60 /*9.5 minutes*/) {Enabled = true};
+            UpdateLeasesTimer = new Timer(9.5 * 1000 * 60 /*9.5 minutes*/) { Enabled = true };
             UpdateLeasesTimer.Elapsed += UpdateAllLeases;
             UpdateLeasesTimer.Start();
         }
@@ -355,7 +355,7 @@ namespace Aurora.ScriptEngine.AuroraDotNetEngine
         private void EventManager_OnStartupComplete(IScene scene, List<string> data)
         {
             AmountOfStartupsLeft++;
-            SceneManager m = scene.RequestModuleInterface<SceneManager>();
+            ISceneManager m = scene.RequestModuleInterface<ISceneManager>();
             if (AmountOfStartupsLeft >= m.AllRegions)
             {
                 //All done!
@@ -453,7 +453,7 @@ namespace Aurora.ScriptEngine.AuroraDotNetEngine
 #if (!ISWIN)
                 List<LUStruct> list = new List<LUStruct>();
                 foreach (ScriptData id in scripts)
-                    list.Add(new LUStruct {Action = LUType.Load, ID = id});
+                    list.Add(new LUStruct { Action = LUType.Load, ID = id });
                 MaintenanceThread.StartScripts(list.ToArray());
 #else
                 MaintenanceThread.StartScripts(scripts.Select(ID => new LUStruct { Action = LUType.Load, ID = ID }).ToArray());
@@ -553,18 +553,18 @@ namespace Aurora.ScriptEngine.AuroraDotNetEngine
             for (int i = 0; i < p.Length; i++)
             {
                 if (p[i] is int)
-                    lsl_p[i] = new LSL_Types.LSLInteger((int) p[i]);
+                    lsl_p[i] = new LSL_Types.LSLInteger((int)p[i]);
                 else if (p[i] is UUID)
                     lsl_p[i] = new LSL_Types.LSLString(UUID.Parse(p[i].ToString()).ToString());
                 else if (p[i] is string)
-                    lsl_p[i] = new LSL_Types.LSLString((string) p[i]);
+                    lsl_p[i] = new LSL_Types.LSLString((string)p[i]);
                 else if (p[i] is Vector3)
-                    lsl_p[i] = new LSL_Types.Vector3(((Vector3) p[i]).X, ((Vector3) p[i]).Y, ((Vector3) p[i]).Z);
+                    lsl_p[i] = new LSL_Types.Vector3(((Vector3)p[i]).X, ((Vector3)p[i]).Y, ((Vector3)p[i]).Z);
                 else if (p[i] is Quaternion)
-                    lsl_p[i] = new LSL_Types.Quaternion(((Quaternion) p[i]).X, ((Quaternion) p[i]).Y,
-                                                        ((Quaternion) p[i]).Z, ((Quaternion) p[i]).W);
+                    lsl_p[i] = new LSL_Types.Quaternion(((Quaternion)p[i]).X, ((Quaternion)p[i]).Y,
+                                                        ((Quaternion)p[i]).Z, ((Quaternion)p[i]).W);
                 else if (p[i] is float)
-                    lsl_p[i] = new LSL_Types.LSLFloat((float) p[i]);
+                    lsl_p[i] = new LSL_Types.LSLFloat((float)p[i]);
                 else
                     lsl_p[i] = p[i];
             }
@@ -579,22 +579,22 @@ namespace Aurora.ScriptEngine.AuroraDotNetEngine
             for (int i = 0; i < p.Length; i++)
             {
                 if (p[i] is int)
-                    lsl_p[i] = new LSL_Types.LSLInteger((int) p[i]);
+                    lsl_p[i] = new LSL_Types.LSLInteger((int)p[i]);
                 else if (p[i] is UUID)
                     lsl_p[i] = new LSL_Types.LSLString(UUID.Parse(p[i].ToString()).ToString());
                 else if (p[i] is string)
-                    lsl_p[i] = new LSL_Types.LSLString((string) p[i]);
+                    lsl_p[i] = new LSL_Types.LSLString((string)p[i]);
                 else if (p[i] is Vector3)
-                    lsl_p[i] = new LSL_Types.Vector3(((Vector3) p[i]).X, ((Vector3) p[i]).Y, ((Vector3) p[i]).Z);
+                    lsl_p[i] = new LSL_Types.Vector3(((Vector3)p[i]).X, ((Vector3)p[i]).Y, ((Vector3)p[i]).Z);
                 else if (p[i] is Quaternion)
-                    lsl_p[i] = new LSL_Types.Quaternion(((Quaternion) p[i]).X, ((Quaternion) p[i]).Y,
-                                                        ((Quaternion) p[i]).Z, ((Quaternion) p[i]).W);
+                    lsl_p[i] = new LSL_Types.Quaternion(((Quaternion)p[i]).X, ((Quaternion)p[i]).Y,
+                                                        ((Quaternion)p[i]).Z, ((Quaternion)p[i]).W);
                 else if (p[i] is float)
-                    lsl_p[i] = new LSL_Types.LSLFloat((float) p[i]);
+                    lsl_p[i] = new LSL_Types.LSLFloat((float)p[i]);
                 else if (p[i] is Changed)
                 {
-                    Changed c = (Changed) p[i];
-                    lsl_p[i] = new LSL_Types.LSLInteger((int) c);
+                    Changed c = (Changed)p[i];
+                    lsl_p[i] = new LSL_Types.LSLInteger((int)c);
                 }
                 else
                     lsl_p[i] = p[i];
@@ -692,10 +692,10 @@ namespace Aurora.ScriptEngine.AuroraDotNetEngine
                 return;
             }
             if (delay > 0.001)
-                ID.EventDelayTicks = (long) delay;
+                ID.EventDelayTicks = (long)delay;
             else
                 ID.EventDelayTicks = 0;
-            ID.EventDelayTicks = (long) (delay*10000000L);
+            ID.EventDelayTicks = (long)(delay * 10000000L);
         }
 
         #endregion
@@ -746,7 +746,7 @@ namespace Aurora.ScriptEngine.AuroraDotNetEngine
                     (obj as IScenePresence).Scene.RequestModuleInterface<IAttachmentsModule>();
                 if (attModule != null)
                 {
-                    ISceneEntity[] attachments = attModule.GetAttachmentsForAvatar (obj.UUID);
+                    ISceneEntity[] attachments = attModule.GetAttachmentsForAvatar(obj.UUID);
                     foreach (ISceneEntity grp in attachments)
                     {
                         activeScripts += GetActiveScripts(grp);
@@ -775,7 +775,7 @@ namespace Aurora.ScriptEngine.AuroraDotNetEngine
             if (obj is IScenePresence)
             {
                 //Get all the scripts in the attachments
-                IAttachmentsModule attModule = ((IScenePresence) obj).Scene.RequestModuleInterface<IAttachmentsModule>();
+                IAttachmentsModule attModule = ((IScenePresence)obj).Scene.RequestModuleInterface<IAttachmentsModule>();
                 if (attModule != null)
                 {
                     ISceneEntity[] attachments = attModule.GetAttachmentsForAvatar(obj.UUID);
@@ -933,7 +933,7 @@ namespace Aurora.ScriptEngine.AuroraDotNetEngine
                 MaintenanceThread.AddScriptChange(new LUStruct[1]
                                                       {
                                                           StartScript(findPrim(partID), itemID, startParam, postOnRez,
-                                                                      stateSource, UUID.Zero)
+                                                                      stateSource, UUID.Zero, false)
                                                       }, LoadPriority.Restart);
                 return;
             }
@@ -961,7 +961,7 @@ namespace Aurora.ScriptEngine.AuroraDotNetEngine
             // Stop long command on script
             RemoveScriptFromPlugins(partID, itemID);
 
-            MaintenanceThread.AddScriptChange(new[] {ls}, LoadPriority.Restart);
+            MaintenanceThread.AddScriptChange(new[] { ls }, LoadPriority.Restart);
         }
 
         public void SaveStateSave(UUID ItemID, UUID PrimID)
@@ -1054,7 +1054,7 @@ namespace Aurora.ScriptEngine.AuroraDotNetEngine
         /// <param name = "itemID"></param>
         /// <param name = "localID"></param>
         public LUStruct StartScript(ISceneChildEntity part, UUID itemID, int startParam, bool postOnRez,
-                                    StateSource statesource, UUID RezzedFrom)
+                                    StateSource statesource, UUID RezzedFrom, bool clearStateSaves)
         {
             ScriptData id = ScriptProtection.GetScript(part.UUID, itemID);
 
@@ -1068,7 +1068,7 @@ namespace Aurora.ScriptEngine.AuroraDotNetEngine
                     //Post the changed event though
                     AddToScriptQueue(id, "changed", new DetectParams[0], EventPriority.FirstStart,
                                      new Object[] { new LSL_Types.LSLInteger(512) });
-                    return new LUStruct {Action = LUType.Unknown};
+                    return new LUStruct { Action = LUType.Unknown };
                 }
                 else
                 {
@@ -1089,6 +1089,7 @@ namespace Aurora.ScriptEngine.AuroraDotNetEngine
             id.Part = part;
             id.World = part.ParentEntity.Scene;
             id.RezzedFrom = RezzedFrom;
+            ls.ClearStateSaves = clearStateSaves;
             ls.ID = id;
             //WE MUST ADD THIS HERE, even though it hasn't compiled yet... 
             //we need to add it so that if things go trying to add events before it fully compiles, we don't fail completely
@@ -1118,10 +1119,10 @@ namespace Aurora.ScriptEngine.AuroraDotNetEngine
             if (data == null)
                 return;
 
-            LUStruct ls = new LUStruct {ID = data, Action = LUType.Unload};
+            LUStruct ls = new LUStruct { ID = data, Action = LUType.Unload };
 
 
-            MaintenanceThread.AddScriptChange(new[] {ls}, LoadPriority.Stop);
+            MaintenanceThread.AddScriptChange(new[] { ls }, LoadPriority.Stop);
 
             //Disconnect from other modules
             ObjectRemoved handlerObjectRemoved = OnObjectRemoved;
@@ -1162,7 +1163,7 @@ namespace Aurora.ScriptEngine.AuroraDotNetEngine
                     foreach (string comperror in Compiler.GetErrors())
                     {
                         error += comperror;
-                    } 
+                    }
                     error += ".";
                     return error;
                 }
@@ -1438,9 +1439,9 @@ namespace Aurora.ScriptEngine.AuroraDotNetEngine
                 ILandObject parcel = parcelManagement.GetLandObject(pos.X, pos.Y);
                 if (parcel != null)
                 {
-                    if ((parcel.LandData.Flags & (uint) ParcelFlags.AllowOtherScripts) != 0)
+                    if ((parcel.LandData.Flags & (uint)ParcelFlags.AllowOtherScripts) != 0)
                         return true;
-                    else if ((parcel.LandData.Flags & (uint) ParcelFlags.AllowGroupScripts) != 0)
+                    else if ((parcel.LandData.Flags & (uint)ParcelFlags.AllowGroupScripts) != 0)
                     {
                         if (part.OwnerID == parcel.LandData.OwnerID
                             || (parcel.LandData.IsGroupOwned && part.GroupID == parcel.LandData.GroupID)
@@ -1571,7 +1572,7 @@ namespace Aurora.ScriptEngine.AuroraDotNetEngine
 
         public void RegisterExtension<T>(T instance)
         {
-            m_extensions[typeof (T)] = instance;
+            m_extensions[typeof(T)] = instance;
         }
 
         #endregion
@@ -1585,7 +1586,7 @@ namespace Aurora.ScriptEngine.AuroraDotNetEngine
 
         public ScriptErrorReporter(IConfig config)
         {
-            Timeout = (config.GetInt("ScriptErrorFindingTimeOut", 5)*1000);
+            Timeout = (config.GetInt("ScriptErrorFindingTimeOut", 5) * 1000);
         }
 
         /// <summary>
@@ -1611,12 +1612,12 @@ namespace Aurora.ScriptEngine.AuroraDotNetEngine
             ArrayList Error = new ArrayList();
 
             if (!TryFindError(ItemID, out Error))
-                return new ArrayList(new[] {"Compile not finished."});
-                    //Not there, but need to return something so the user knows
+                return new ArrayList(new[] { "Compile not finished." });
+            //Not there, but need to return something so the user knows
 
             RemoveError(ItemID);
 
-            if ((string) Error[0] == "SUCCESSFULL")
+            if ((string)Error[0] == "SUCCESSFULL")
                 return new ArrayList();
 
             return Error;

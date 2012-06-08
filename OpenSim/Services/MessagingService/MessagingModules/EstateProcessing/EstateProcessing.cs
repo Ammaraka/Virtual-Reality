@@ -119,7 +119,7 @@ namespace OpenSim.Services.MessagingService
                 //We got a message, deal with it
                 uint estateID = innerMessage["EstateID"].AsUInteger();
                 UUID regionID = innerMessage["RegionID"].AsUUID();
-                SceneManager manager = m_registry.RequestModuleInterface<SceneManager>();
+                ISceneManager manager = m_registry.RequestModuleInterface<ISceneManager>();
                 if (manager != null)
                 {
                     IScene s = null;
@@ -131,7 +131,7 @@ namespace OpenSim.Services.MessagingService
                             if (estateConnector != null)
                             {
                                 EstateSettings es = null;
-                                if ((es = estateConnector.GetEstateSettings(regionID)) != null)
+                                if ((es = estateConnector.GetEstateSettings(regionID)) != null && es.EstateID != 0)
                                 {
                                     s.RegionInfo.EstateSettings = es;
                                     MainConsole.Instance.Debug("[EstateProcessor]: Updated estate information.");

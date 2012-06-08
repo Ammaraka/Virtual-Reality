@@ -204,8 +204,6 @@ namespace Aurora.Modules.Estate
                 m_scene.RegionInfo.EstateSettings.SunPosition = sun_hour;
             }
             m_scene.RegionInfo.EstateSettings.Save();
-            IEstateConnector connector = Aurora.DataManager.DataManager.RequestPlugin<IEstateConnector>();
-            connector.SaveEstateSettings(m_scene.RegionInfo.EstateSettings);
             TriggerEstateInfoChange();
 
             TriggerEstateSunUpdate();
@@ -288,12 +286,18 @@ namespace Aurora.Modules.Estate
             return responsedata;
         }
 
-        public void setEstateTerrainBaseTexture(IClientAPI remoteClient, int corner, UUID texture)
+        public void setEstateTerrainBaseTexture(int level, UUID texture)
+        {
+            setEstateTerrainBaseTexture(null, level, texture);
+            sendRegionHandshakeToAll();
+        }
+ 
+        public void setEstateTerrainBaseTexture(IClientAPI remoteClient, int level, UUID texture)
         {
             if (texture == UUID.Zero)
                 return;
 
-            switch (corner)
+            switch (level)
             {
                 case 0:
                     m_scene.RegionInfo.RegionSettings.TerrainTexture1 = texture;
@@ -310,6 +314,11 @@ namespace Aurora.Modules.Estate
             }
         }
 
+        public void setEstateTerrainTextureHeights(int corner, float lowValue, float highValue)
+        {
+            setEstateTerrainTextureHeights(null, corner, lowValue, highValue);
+        }
+ 
         public void setEstateTerrainTextureHeights(IClientAPI client, int corner, float lowValue, float highValue)
         {
             if (m_scene.Permissions.CanIssueEstateCommand(client.AgentId, true))
@@ -839,7 +848,7 @@ namespace Aurora.Modules.Estate
                     ISceneEntity[] entities = m_scene.Entities.GetEntities ();
                     foreach (ISceneEntity ent in entities)
                     {
-                         ent.CreateScriptInstances(0, false, StateSource.NewRez, UUID.Zero);
+                        ent.CreateScriptInstances(0, false, StateSource.NewRez, UUID.Zero, false);
                     }
                 }
                 m_scene.RegionInfo.RegionSettings.DisableScripts = !ScriptEngine;
