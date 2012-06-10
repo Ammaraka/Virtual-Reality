@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Contributors, http://aurora-sim.org/, http://opensimulator.org/
+ * Copyright (c) Contributors, http://virtualrealitygrid.org/, http://aurora-sim.org/, http://opensimulator.org/
  * See CONTRIBUTORS.TXT for a full list of copyright holders.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -9,7 +9,7 @@
  *     * Redistributions in binary form must reproduce the above copyright
  *       notice, this list of conditions and the following disclaimer in the
  *       documentation and/or other materials provided with the distribution.
- *     * Neither the name of the Aurora-Sim Project nor the
+ *     * Neither the name of the Virtual Reality Project nor the
  *       names of its contributors may be used to endorse or promote products
  *       derived from this software without specific prior written permission.
  *
@@ -543,7 +543,7 @@ namespace Aurora.Modules.Groups
         public void EjectGroupMember(IClientAPI remoteClient, UUID agentID, UUID groupID, UUID ejecteeID)
         {
             if (m_debugEnabled) MainConsole.Instance.DebugFormat("[GROUPS]: {0} called", MethodBase.GetCurrentMethod().Name);
->>>>>>> Aurora/master
+>>>>>>> VRGrid/master
             if (!m_groupData.RemoveAgentFromGroup(GetRequestingAgentID(remoteClient), ejecteeID, groupID))
                 return;
 
@@ -592,7 +592,7 @@ namespace Aurora.Modules.Groups
 
             }
 
->>>>>>> Aurora/master
+>>>>>>> VRGrid/master
             GroupRecord groupInfo = m_groupData.GetGroupRecord(GetRequestingAgentID(remoteClient), groupID, null);
 
             UserAccount account = m_sceneList[0].UserAccountService.GetUserAccount(
@@ -641,7 +641,7 @@ namespace Aurora.Modules.Groups
                 RegionID = remoteClient.Scene.RegionInfo.RegionID,
                 binaryBucket = new byte[0]
             };
->>>>>>> Aurora/master
+>>>>>>> VRGrid/master
 
             OutgoingInstantMessage(msg, ejecteeID);
 
@@ -719,7 +719,7 @@ namespace Aurora.Modules.Groups
                     timestamp = (uint)Util.UnixTimeSinceEpoch(),
                     toAgentID = UUID.Zero
                 };
->>>>>>> Aurora/master
+>>>>>>> VRGrid/master
 
                 m_groupsMessagingModule.EnsureGroupChatIsStarted(groupID);
                 m_groupsMessagingModule.SendMessageToGroup(im, groupID);
@@ -773,7 +773,7 @@ namespace Aurora.Modules.Groups
                 }
             }
 
->>>>>>> Aurora/master
+>>>>>>> VRGrid/master
             UUID InviteID = UUID.Random();
 
             m_groupData.AddAgentToGroupInvite(GetRequestingAgentID(remoteClient), InviteID, groupID, roleID,
@@ -811,7 +811,7 @@ namespace Aurora.Modules.Groups
                     msg.dialog = (byte) InstantMessageDialog.GroupInvitation;
 =======
                     msg.dialog = (byte)InstantMessageDialog.GroupInvitation;
->>>>>>> Aurora/master
+>>>>>>> VRGrid/master
                     msg.fromGroup = true;
                     msg.offline = 0;
                     msg.ParentEstateID = 0;
