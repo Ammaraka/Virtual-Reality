@@ -270,10 +270,11 @@ namespace Aurora.Framework
                 int tickstart = Util.EnvironmentTickCount();
                 int tickdata = 0;
                 int tickserialize = 0;
-
+                byte[] buffer = data != null ? Encoding.UTF8.GetBytes(OSDParser.SerializeJsonString(data, true)) : null;
+                HttpWebRequest request = null;
                 try
                 {
-                    HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
+                    request = (HttpWebRequest)WebRequest.Create(url);
                     request.Method = method;
                     request.Timeout = timeout;
                     request.KeepAlive = false;
@@ -281,16 +282,12 @@ namespace Aurora.Framework
                     request.ReadWriteTimeout = timeout / 4;
 
                     // If there is some input, write it into the request
-                    if (data != null)
+                    if (buffer != null && buffer.Length > 0)
                     {
-                        string strBuffer = OSDParser.SerializeJsonString(data, true);
-                        byte[] buffer = Encoding.UTF8.GetBytes(strBuffer);
-
                         request.ContentType = "application/json";
                         request.ContentLength = buffer.Length; //Count bytes to send
-                        if (buffer.Length > 0)
-                            using (Stream requestStream = request.GetRequestStream())
-                                requestStream.Write(buffer, 0, buffer.Length); //Send it
+                        using (Stream requestStream = request.GetRequestStream())
+                             requestStream.Write(buffer, 0, buffer.Length); //Send it
                     }
 
                     // capture how much time was spent writing, this may seem silly
@@ -318,10 +315,14 @@ namespace Aurora.Framework
                         HttpWebResponse webResponse = (HttpWebResponse)we.Response;
                         errorMessage = String.Format("[{0}] {1}", webResponse.StatusCode, webResponse.StatusDescription);
                     }
+                    if(request != null)
+                        request.Abort();
                 }
                 catch (Exception ex)
                 {
                     errorMessage = ex.Message;
+                    if (request != null)
+                        request.Abort();
                 }
                 finally
                 {
@@ -360,12 +361,16 @@ namespace Aurora.Framework
         protected string m_SessionID;
         protected IRegistryCore m_registry;
         protected static Dictionary<string, List<MethodImplementation>> m_methods = null;
+        protected IGridRegistrationService m_urlModule;
+        protected ICapsService m_capsService;
 
         public ServerHandler(string url, string SessionID, IRegistryCore registry) :
             base("POST", url)
         {
             m_SessionID = SessionID;
             m_registry = registry;
+            m_capsService = m_registry.RequestModuleInterface<ICapsService>();
+            m_urlModule = m_registry.RequestModuleInterface<IGridRegistrationService>();
             if (m_methods == null)
             {
                 m_methods = new Dictionary<string, List<MethodImplementation>>();
@@ -418,8 +423,6 @@ namespace Aurora.Framework
         {
             if (args.ContainsKey("Method"))
             {
-                IGridRegistrationService urlModule =
-                    m_registry.RequestModuleInterface<IGridRegistrationService>();
                 string method = args["Method"].AsString();
 
                 MethodImplementation methodInfo;
@@ -430,15 +433,21 @@ namespace Aurora.Framework
                         if (methodInfo.Attribute.ThreatLevel != ThreatLevel.None)
                             return new byte[0];
                     }
-                    else if (!urlModule.CheckThreatLevel(m_SessionID, method, methodInfo.Attribute.ThreatLevel))
+                    else if (!m_urlModule.CheckThreatLevel(m_SessionID, method, methodInfo.Attribute.ThreatLevel))
                         return new byte[0];
                     if (methodInfo.Attribute.UsePassword)
                     {
                         if (!methodInfo.Reference.CheckPassword(args["Password"].AsString()))
                             return new byte[0];
                     }
+                    if (methodInfo.Attribute.OnlyCallableIfUserInRegion)
+                    {
+                        UUID userID = args["UserID"].AsUUID();
+                        IClientCapsService clientCaps = m_capsService.GetClientCapsService(userID);
+                        if (userID == UUID.Zero || clientCaps == null || clientCaps.GetRootCapsService().RegionHandle != ulong.Parse(m_SessionID))
+                            return new byte[0];
+                    }
 
-                    MainConsole.Instance.Debug("[Server]: Method Called: " + method);
 
                     ParameterInfo[] paramInfo = methodInfo.Method.GetParameters();
                     object[] parameters = new object[paramInfo.Length];
