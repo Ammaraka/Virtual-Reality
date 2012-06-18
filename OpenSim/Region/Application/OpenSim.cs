@@ -70,6 +70,7 @@ namespace OpenSim
         private Regex m_consolePromptRegex = new Regex(@"([^\\])\\(\w)", RegexOptions.Compiled);
 
         private string m_timedScript = "disabled";
+        private int m_timeInterval = 1200;
         private Timer m_scriptTimer;
 
         public OpenSim(IConfigSource configSource) : base(configSource)
@@ -99,6 +100,10 @@ namespace OpenSim
                     m_consolePort = (uint)networkConfig.GetInt("console_port", 0);
 
                 m_timedScript = startupConfig.GetString("timer_Script", "disabled");
+                if (m_timedScript != "disabled")
+                {
+                    m_timeInterval = startupConfig.GetInt("timer_Interval", 1200);
+                }
 
                 if (m_logFileAppender != null)
                 {
@@ -216,7 +221,7 @@ namespace OpenSim
             {
                 m_scriptTimer = new Timer();
                 m_scriptTimer.Enabled = true;
-                m_scriptTimer.Interval = 1200*1000;
+                m_scriptTimer.Interval = m_timeInterval*1000;
                 m_scriptTimer.Elapsed += RunAutoTimerScript;
             }
         }
@@ -226,12 +231,14 @@ namespace OpenSim
         /// </summary>
         private void RegisterConsoleCommands()
         {
+            MainServer.RegisterHttpConsoleCommands(m_console);
+
             m_console.Commands.AddCommand("Objects", false, "force update",
                                           "force update",
                                           "Force the update of all objects on clients",
                                           HandleForceUpdate);
 
-            m_console.Commands.AddCommand("Comms", false, "debug packet",
+            m_console.Commands.AddCommand("Debug", false, "debug packet",
                                           "debug packet <level> [<avatar-first-name> <avatar-last-name>]",
                                           "Turn on packet debugging",
                                             "If level >  255 then all incoming and outgoing packets are logged.\n"
@@ -243,17 +250,9 @@ namespace OpenSim
                                           + "If an avatar name is given then only packets from that avatar are logged",
                                           Debug);
 
-            m_console.Commands.AddCommand("Comms", false, "debug http",
-                                          "debug http <level>",
-                                          "Turn on inbound http request debugging for everything except the event queue (see debug eq).",
-                                            "If level >= 2 then the handler used to service the request is logged.\n"
-                                          + "If level >= 1 then incoming HTTP requests are logged.\n"
-                                          + "If level <= 0 then no extra http logging is done.\n",
-                                          Debug);
+            m_console.Commands.AddCommand("Debug", false, "debug teleport", "debug teleport", "Toggle teleport route debugging", Debug);
 
-            m_console.Commands.AddCommand("Comms", false, "debug teleport", "debug teleport", "Toggle teleport route debugging", Debug);
-
-            m_console.Commands.AddCommand("Regions", false, "debug scene",
+            m_console.Commands.AddCommand("Debug", false, "debug scene",
                                           "debug scene <scripting> <collisions> <physics>",
                                           "Turn on scene debugging", Debug);
 
@@ -907,21 +906,6 @@ namespace OpenSim
                         }
                     }
 
-                    break;
-
-                case "http":
-                    if (args.Length == 3)
-                    {
-                        int newDebug;
-                        if (int.TryParse(args[2], out newDebug))
-                        {
-                            MainServer.Instance.DebugLevel = newDebug;
-                            MainConsole.Instance.OutputFormat("Debug http level set to {0}", newDebug);
-                            break;
-                        }
-                    }
-
-                    MainConsole.Instance.Output("Usage: debug http 0..2");
                     break;
 
                 case "scene":
